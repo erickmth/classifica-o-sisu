@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia SISU Aluno - Ver Classificação</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a56db;
+            --primary-dark: #1e429f;
+            --secondary: #10b981;
+            --danger: #dc2626;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+            --border-radius: 12px;
+            --shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #f1f5f9;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow);
+        }
+
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2 i {
+            color: var(--secondary);
+        }
+
+        h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+            color: var(--dark);
+        }
+
+        .step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px dashed var(--gray-light);
+        }
+
+        .step:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .step-number {
+            background: var(--primary);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-content p {
+            margin-bottom: 10px;
+        }
+
+        .image-container {
+            background: var(--gray-light);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .image-placeholder {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, #cbd5e1, #94a3b8);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark);
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .image-placeholder i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.7;
+        }
+
+        .language-toggle {
+            display: flex;
+            background: var(--gray-light);
+            border-radius: 50px;
+            padding: 5px;
+            margin: 15px 0;
+            max-width: 300px;
+        }
+
+        .lang-btn {
+            flex: 1;
+            text-align: center;
+            padding: 10px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .lang-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .code-container {
+            position: relative;
+            margin: 25px 0;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .code-header {
+            background: var(--dark);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .copy-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .copy-btn:hover {
+            background: #0da271;
+        }
+
+        .copy-btn.copied {
+            background: var(--primary);
+        }
+
+        .code-box {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            overflow-x: auto;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .warning {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+        }
+
+        .note {
+            background: #dbeafe;
+            border-left: 4px solid var(--primary);
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .highlight {
+            background: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            border: 1px solid var(--gray-light);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+            
+            .step {
+                flex-direction: column;
+            }
+            
+            .step-number {
+                margin-bottom: 10px;
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><i class="fas fa-graduation-cap"></i> Guia SISU Aluno</h1>
+            <p class="subtitle">Aprenda a visualizar sua classificação no SISU usando o console do navegador. Passo a passo completo para acessar suas informações de ranking.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="card">
+            <h2><i class="fas fa-info-circle"></i> O que este código faz?</h2>
+            <p>Este código JavaScript busca suas informações de classificação no SISU diretamente da API oficial do sistema. Ele cria uma interface visual dentro do site <span class="highlight">sisualuno.mec.gov.br</span> para mostrar sua posição em cada curso e modalidade de concorrência.</p>
+            <div class="note">
+                <p><strong>Nota:</strong> O código só funciona quando você está logado no SISU Aluno e acessa seus dados pessoais. Ele não modifica o sistema, apenas exibe informações já disponíveis para você.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><i class="fas fa-laptop-code"></i> Passo 1: Acessar o SISU Aluno</h2>
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <p>Acesse o site oficial do SISU Aluno:</p>
+                    <p><a href="https://sisualuno.mec.gov.br/" target="_blank" style="color: var(--primary); font-weight: 500;">https://sisualuno.mec.gov.br/</a></p>
+                    <p>Faça login com sua conta Gov.br para acessar suas inscrições.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><i class="fas fa-tools"></i> Passo 2: Abrir Ferramentas do Desenvolvedor</h2>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <p>Com a página do SISU Aluno aberta, você precisa acessar as ferramentas do desenvolvedor (DevTools) do navegador.</p>
+                    
+                    <h3>Métodos para abrir:</h3>
+                    <div class="step">
+                        <div class="step-number">A</div>
+                        <div class="step-content">
+                            <p><strong>Tecla de atalho (mais rápido):</strong></p>
+                            <p>Pressione <span class="highlight">F12</span> no seu teclado.</p>
+                            <p>Ou use <span class="highlight">Ctrl+Shift+I</span> (Windows/Linux) ou <span class="highlight">Cmd+Option+I</span> (Mac).</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">B</div>
+                        <div class="step-content">
+                            <p><strong>Menu do navegador:</strong></p>
+                            <p>Clique no menu (três pontos ou linhas no canto superior direito) → "Mais ferramentas" → "Ferramentas do desenvolvedor".</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">C</div>
+                        <div class="step-content">
+                            <p><strong>Clique com botão direito:</strong></p>
+                            <p>Clique com o botão direito em qualquer parte da página e selecione "Inspecionar" ou "Inspecionar elemento".</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><i class="fas fa-language"></i> Passo 3: Identificar a Aba Console</h2>
+            
+            <p>As ferramentas do desenvolvedor abrem em uma nova janela ou painel. Você precisa encontrar a aba "Console":</p>
+            
+            <div class="language-toggle">
+                <div class="lang-btn active" id="btn-pt">Português (PT-BR)</div>
+                <div class="lang-btn" id="btn-en">Inglês (EN)</div>
+            </div>
+            
+            <div id="pt-instructions">
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <p>Na janela das ferramentas do desenvolvedor, procure pelas abas no topo:</p>
+                        <div class="image-container">
+                            <div class="image-placeholder">
+                                <i class="fas fa-window-maximize"></i>
+                                <p>Janela do DevTools com abas: Elementos, Console, Rede, etc.</p>
+                            </div>
+                            <p>Clique na aba <span class="highlight">"Console"</span></p>
+                        </div>
+                        <p>Você verá uma área em branco ou com algumas mensagens. É aqui que vamos colar o código.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="en-instructions" style="display: none;">
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <p>In the developer tools window, look for the tabs at the top:</p>
+                        <div class="image-container">
+                            <div class="image-placeholder">
+                                <i class="fas fa-window-maximize"></i>
+                                <p>DevTools window with tabs: Elements, Console, Network, etc.</p>
+                            </div>
+                            <p>Click on the <span class="highlight">"Console"</span> tab</p>
+                        </div>
+                        <p>You'll see a blank area or some messages. This is where we'll paste the code.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><i class="fas fa-code"></i> Passo 4: Copiar e Colar o Código</h2>
+            
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <p>Abaixo está o código JavaScript completo. Clique no botão "Copiar Código" para copiá-lo para sua área de transferência:</p>
+                    
+                    <div class="code-container">
+                        <div class="code-header">
+                            <span>código-sisu-ranking.js</span>
+                            <button class="copy-btn" id="copyButton">
+                                <i class="far fa-copy"></i> Copiar Código
+                            </button>
+                        </div>
+                        <div class="code-box" id="codeContent">
+(async function () {
+  try {
+    const token = sessionStorage.getItem("token");
+
+    if (!token) {
+      alert("Token não encontrado no sessionStorage.");
+      return;
+    }
+
+    const response = await fetch(
+      "https://sisualuno-api.sisualuno.mec.gov.br/api/v1/inscricao/ranking",
+      {
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          Authorization: "Bearer " + token,
+        },
+        mode: "cors",
+      }
+    );
+
+    if (response.status !== 200) {
+      alert(`Houve um erro ao buscar o ranking [${response.status}]`);
+      throw new Error("Failed to fetch");
+    }
+
+    const data = await response.json();
+
+    // ===== CSS =====
+    const style = document.createElement("style");
+    style.innerHTML = `
+      #ranking-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(255,255,255,0.4);
+        backdrop-filter: blur(6px);
+        z-index: 999998;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #ranking-popup {
+        background: #ffffff;
+        width: min(95vw, 900px);
+        max-height: 80vh;
+        border-radius: 16px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      #ranking-popup-header {
+        padding: 12px 16px;
+        font-weight: 800;
+        font-size: 16px;
+        border-bottom: 1px solid #e5e7eb;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      #ranking-close {
+        cursor: pointer;
+        font-size: 18px;
+        padding: 4px 10px;
+        border-radius: 8px;
+      }
+
+      #ranking-close:hover {
+        background: #f1f5f9;
+      }
+
+      #ranking-popup-content {
+        padding: 14px;
+        overflow-y: auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 12px;
+      }
+
+      .ranking-card {
+        background: #f8fafc;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .ranking-course {
+        font-weight: 700;
+        font-size: 14px;
+        color: #0f172a;
+      }
+
+      .ranking-sub {
+        font-size: 12px;
+        color: #64748b;
+      }
+
+      .ranking-mod {
+        border-top: 1px dashed #e5e7eb;
+        padding-top: 6px;
+        margin-top: 6px;
+      }
+
+      .ranking-mod-title {
+        font-size: 11px;
+        font-weight: 700;
+        color: #475569;
+      }
+
+      .ranking-pos strong {
+        color: #dc2626;
+        font-size: 16px;
+      }
+
+      #ranking-fab {
+        position: fixed;
+        right: 16px;
+        bottom: 16px;
+        background: #dc2626;
+        color: white;
+        padding: 12px 16px;
+        border-radius: 999px;
+        font-weight: 800;
+        cursor: pointer;
+        z-index: 999997;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+      }
+
+      #ranking-fab:hover {
+        background: #b91c1c;
+      }
+    `;
+    document.head.appendChild(style);
+
+    // ===== OVERLAY + POPUP =====
+    const overlay = document.createElement("div");
+    overlay.id = "ranking-overlay";
+
+    const popup = document.createElement("div");
+    popup.id = "ranking-popup";
+
+    const header = document.createElement("div");
+    header.id = "ranking-popup-header";
+    header.innerHTML = `<span>Classificação no SISU</span>`;
+
+    const closeBtn = document.createElement("span");
+    closeBtn.id = "ranking-close";
+    closeBtn.textContent = "✕";
+
+    header.appendChild(closeBtn);
+
+    const content = document.createElement("div");
+    content.id = "ranking-popup-content";
+
+    popup.appendChild(header);
+    popup.appendChild(content);
+    overlay.appendChild(popup);
+    document.body.appendChild(overlay);
+
+    // ===== FLOATING BUTTON =====
+    const fab = document.createElement("div");
+    fab.id = "ranking-fab";
+    fab.textContent = "Classificação";
+    document.body.appendChild(fab);
+
+    // ===== EVENTS =====
+    function openPopup() {
+      overlay.style.display = "flex";
+    }
+
+    function closePopup() {
+      overlay.style.display = "none";
+    }
+
+    closeBtn.onclick = closePopup;
+    fab.onclick = openPopup;
+
+    // ===== RENDER DATA =====
+    for (const ranking of data.classificacoes) {
+      const card = document.createElement("div");
+      card.className = "ranking-card";
+
+      const course = document.createElement("div");
+      course.className = "ranking-course";
+      course.textContent = ranking.no_curso;
+
+      const sub = document.createElement("div");
+      sub.className = "ranking-sub";
+      sub.textContent = `${ranking.no_ies} • ${ranking.no_campus}`;
+
+      card.appendChild(course);
+      card.appendChild(sub);
+
+      for (const modalidade of ranking.modalidades) {
+        const mod = document.createElement("div");
+        mod.className = "ranking-mod";
+
+        const title = document.createElement("div");
+        title.className = "ranking-mod-title";
+        title.textContent = modalidade.no_mod_concorrencia;
+
+        const pos = document.createElement("div");
+        pos.className = "ranking-pos";
+        pos.innerHTML = `
+          Posição <strong>${modalidade.nu_classificacao}</strong>
+          de ${modalidade.qt_vagas_modalidade} vagas
+        `;
+
+        mod.appendChild(title);
+        mod.appendChild(pos);
+        card.appendChild(mod);
+      }
+
+      content.appendChild(card);
+    }
+  } catch (err) {
+    console.error("Erro ao carregar ranking:", err);
+  }
+})();
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <p>Volte para a aba Console no SISU Aluno, clique na área de texto do console e cole o código usando:</p>
+                    <p><span class="highlight">Ctrl+V</span> (Windows/Linux) ou <span class="highlight">Cmd+V</span> (Mac)</p>
+                    <p>Pressione <span class="highlight">Enter</span> para executar o código.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><i class="fas fa-check-circle"></i> Passo 5: Usar a Interface</h2>
+            
+            <div class="step">
+                <div class="step-number">6</div>
+                <div class="step-content">
+                    <p>Após executar o código, você verá:</p>
+                    <ul style="padding-left: 20px; margin: 15px 0;">
+                        <li style="margin-bottom: 8px;">Um botão vermelho flutuante escrito <strong>"Classificação"</strong> no canto inferior direito da página do SISU.</li>
+                        <li style="margin-bottom: 8px;">Clique nesse botão para abrir um painel com suas classificações.</li>
+                        <li>O painel mostrará cada curso que você se inscreveu, com sua posição em cada modalidade de concorrência.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="warning">
+                <p><strong>Atenção:</strong> Este código só funciona enquanto você está na página do SISU Aluno. Se atualizar a página ou sair do site, será necessário executar o código novamente.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><i class="fas fa-question-circle"></i> Solução de Problemas</h2>
+            
+            <div class="step">
+                <div class="step-number">?</div>
+                <div class="step-content">
+                    <h3>Problemas comuns e soluções:</h3>
+                    
+                    <p><strong>1. "Token não encontrado no sessionStorage":</strong></p>
+                    <p>Certifique-se de estar logado no SISU Aluno e na página principal após o login.</p>
+                    
+                    <p><strong>2. Código não executa:</strong></p>
+                    <p>Verifique se está na aba Console corretamente. Tente fechar e reabrir as ferramentas do desenvolvedor.</p>
+                    
+                    <p><strong>3. Nenhuma informação aparece:</strong></p>
+                    <p>O SISU pode não ter liberado as classificações ainda para sua inscrição.</p>
+                    
+                    <p><strong>4. Erro de conexão:</strong></p>
+                    <p>Verifique sua conexão com a internet e tente novamente.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="container">
+        <p>Este guia é apenas para fins educacionais. O código não modifica o sistema SISU, apenas exibe informações já disponíveis.</p>
+        <p>© 2023 Guia SISU Aluno - Não afiliado ao MEC ou ao Governo Federal</p>
+    </footer>
+
+    <script>
+        // Toggle entre instruções em português e inglês
+        document.getElementById('btn-pt').addEventListener('click', function() {
+            document.getElementById('btn-pt').classList.add('active');
+            document.getElementById('btn-en').classList.remove('active');
+            document.getElementById('pt-instructions').style.display = 'block';
+            document.getElementById('en-instructions').style.display = 'none';
+        });
+        
+        document.getElementById('btn-en').addEventListener('click', function() {
+            document.getElementById('btn-en').classList.add('active');
+            document.getElementById('btn-pt').classList.remove('active');
+            document.getElementById('en-instructions').style.display = 'block';
+            document.getElementById('pt-instructions').style.display = 'none';
+        });
+        
+        // Copiar código para a área de transferência
+        document.getElementById('copyButton').addEventListener('click', function() {
+            const code = document.getElementById('codeContent').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = this.innerHTML;
+                this.innerHTML = '<i class="fas fa-check"></i> Código Copiado!';
+                this.classList.add('copied');
+                
+                setTimeout(() => {
+                    this.innerHTML = originalText;
+                    this.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                console.error('Erro ao copiar: ', err);
+                alert('Não foi possível copiar o código. Tente selecionar e copiar manualmente.');
+            });
+        });
+        
+        // Destacar elementos interativos
+        document.querySelectorAll('.highlight').forEach(el => {
+            el.addEventListener('mouseenter', function() {
+                this.style.backgroundColor = '#e2e8f0';
+            });
+            
+            el.addEventListener('mouseleave', function() {
+                this.style.backgroundColor = '#f1f5f9';
+            });
+        });
+    </script>
+</body>
+</html>
